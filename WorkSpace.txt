@@ -1,0 +1,32 @@
+/MinimalBasics
+│
+├── /frontend
+│   ├── /css
+│   │   └── styles.css
+│   ├── /js
+│   │   ├── auth.js
+│   │   ├── loadComponents.js
+│   │   ├── store.js
+│   │   ├── products.js
+│   │   ├── cart.js
+│   ├── login.html
+│   ├── header.html
+│   ├── footer.html
+│   ├── dashboard.html
+│   ├── categories.html
+│   ├── product.html
+│   └── cart.html
+│
+├── /backend
+│   ├── /data
+│   │   ├── usuarios.json
+│   │   └── tienda.json
+│   ├── /images
+│   │   └── (imágenes de productos)
+│   ├── procesar.php
+│   ├── login.php
+│   ├── carrito.php
+│   ├── productos_vistos.php
+│   └── utils.php
+│
+└── README.md

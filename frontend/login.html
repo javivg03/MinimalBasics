@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MinimalBasics</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="login-page">
+    <div class="particles"></div>
+    <div class="login-container">
+        <h1>MinimalBasics</h1>
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+        <p id="errorMessage" class="error-message" style="display: none;"></p>
+    </div>
+    <script src="js/auth.js"></script>
+    <script>
+        // Particles script
+        const particlesContainer = document.querySelector('.particles');
+        for (let i = 0; i < 100; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.animationDuration = Math.random() * 5 + 3 + 's';
+            particle.style.width = particle.style.height = Math.random() * 4 + 2 + 'px';
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>

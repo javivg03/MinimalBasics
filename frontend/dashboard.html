@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MinimalBasics</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="headerContainer"></div> <!-- Contenedor para el header -->
+    <main>
+        <section id="welcome">
+            <h2>Bienvenido <span id="username"></span>!</h2>
+            <p>Explora nuestras categorías y encuentra lo que necesitas.</p>
+        </section>
+        <section id="categories">
+            <h2>Categorías</h2>
+            <div id="categoriesList" class="categories-container">
+                <!-- Aquí se generarán las categorías dinámicamente -->
+            </div>
+        </section>
+        <section id="recent">
+            <h2>Productos Destacados</h2>
+            <div id="recentProducts" class="products-container">
+                <!-- Aquí se generarán los productos dinámicamente -->
+            </div>
+        </section>
+    </main>
+    
+    <div id="footerContainer"></div> <!-- Contenedor para el footer -->
+    
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/loadComponents.js"></script> <!-- Enlace al script que carga el header y el footer -->
+</body>
+</html>

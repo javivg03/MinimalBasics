@@ -1,0 +1,122 @@
+/* --- Estilos globales --- */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Fondo claro */
+    color: #212529; /* Texto oscuro */
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que el body ocupe al menos el 100% de la altura de la ventana */
+}
+
+/* --- Header --- */
+header {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    position: sticky; /* Cambiado a sticky para que se mantenga en la parte superior */
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los elementos */
+    align-items: center;
+}
+
+.menu-left {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre los elementos del menú */
+}
+
+.logo {
+    flex-grow: 1; /* Permite que el logo ocupe el espacio disponible */
+    text-align: center; /* Centra el título */
+    font-size: 24px;
+    font-weight: 700;
+    color: #007bff;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit; /* Hereda el color del logo */
+}
+
+.menu-right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre los elementos del menú */
+}
+
+.menu a,
+.menu button {
+    font-size: 16px;
+    color: #212529;
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.menu a:hover,
+.menu button:hover {
+    color: #007bff; /* Color al pasar el mouse */
+}
+
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+}
+
+.dropbtn {
+    font-size: 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #212529;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    color: #212529;
+    text-decoration: none;
+    display: block;
+    padding: 10px 20px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* Mostrar el menú desplegable al pasar el mouse */
+}
+
+/* --- Main Content --- */
+main {
+    flex: 1; /* Permite que el main ocupe el espacio restante */
+    padding: 20px; /* Espaciado alrededor del contenido */
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    position: relative; /* Cambiado a relative para evitar problemas de posicionamiento */
+    width: 100%;
+}
