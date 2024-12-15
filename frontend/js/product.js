@@ -1,47 +1,51 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryId = urlParams.get('category');
+function mostrarProductos(productos, categoryId) {
+    const productosDiv = document.getElementById('productos');
+    productosDiv.innerHTML = '';
 
-    fetch('/MinimalBasics/backend/data/tienda.json')
-        .then(response => response.json())
-        .then(data => {
-            const productosDiv = document.getElementById('productos');
-            const categoriasDiv = document.getElementById('categorias');
+    const filteredProducts = productos.filter(product => product.category == categoryId);
 
-            if (!productosDiv || !categoriasDiv) {
-                console.error('Los contenedores de categorías o productos no se encontraron en el DOM.');
-                return; // Salir si no se encuentran los elementos
-            }
+    filteredProducts.forEach(product => {
+        const productElement = document.createElement('div');
+        productElement.className = 'product';
+        productElement.innerHTML = `
+            <a href="productDetails.html?productId=${product.id}">
+                <img src="/MinimalBasics/images/${product.image}" alt="${product.name}">
+            </a>
+            <h3>${product.name}</h3>
+            <p>Precio: $${product.price}</p>
+            <button onclick="agregarAlCarrito(${product.id})">Agregar al Carrito</button>
+        `;
+        productosDiv.appendChild(productElement);
+    });
+}
+// Función global para mostrar notificaciones tipo toast
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
-            // Mostrar categorías
-            data.categories.forEach(category => {
-                const categoryElement = document.createElement('button');
-                categoryElement.textContent = category.name;
-                categoryElement.addEventListener('click', () => {
-                    // Redirigir a la página de productos de la categoría seleccionada
-                    window.location.href = `product.html?category=${category.id}`;
-                });
-                categoriasDiv.appendChild(categoryElement);
-            });
+    // Animación de entrada
+    setTimeout(() => toast.classList.add("show"), 100);
 
-            // Mostrar productos de la categoría seleccionada
-            mostrarProductos(data.products, categoryId);
-        })
-        .catch(error => console.error('Error cargando los datos:', error));
+    // Eliminar el toast después de 3 segundos
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => document.body.removeChild(toast), 300);
+    }, 3000);
+}
 
-    function mostrarProductos(productos, categoryId) {
-        const productosDiv = document.getElementById('productos');
-        productosDiv.innerHTML = ''; // Limpiar productos anteriores
+// Actualización de agregarAlCarrito para incluir la notificación
+window.agregarAlCarrito = function (productId) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const productoExistente = cart.find(item => item.id === productId);
 
-        const filteredProducts = productos.filter(product => product.category == categoryId);
-        filteredProducts.forEach(product => {
-            const productElement = document.createElement('div');
-            productElement.innerHTML = `
-                <h3>${product.name}</h3>
-                <p>Precio: $${product.price}</p>
-                <p>Descripción: ${product.description || 'No disponible'}</p>
-            `;
-            productosDiv.appendChild(productElement);
-        });
+    if (productoExistente) {
+        productoExistente.quantity += 1;
+    } else {
+        cart.push({ id: productId, quantity: 1 });
     }
-});
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    showToast("Producto agregado al carrito");
+};

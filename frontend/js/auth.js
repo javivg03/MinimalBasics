@@ -42,9 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Guardar el token en localStorage
                         localStorage.setItem('token', data.token);
 
-                        // Guardar las categorías en localStorage
-                        localStorage.setItem('categories', JSON.stringify(data.categories));
-
                         // Redirigir al dashboard
                         window.location.href = '/MinimalBasics/frontend/dashboard.html';
                     } else {
@@ -66,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
         logoutBtn.addEventListener('click', function () {
             // Eliminar el token del almacenamiento local
             localStorage.removeItem('token');
-            localStorage.removeItem('categories'); // Eliminar categorías al cerrar sesión
 
             // Redirigir al usuario a la página de inicio de sesión
             window.location.href = '/MinimalBasics/frontend/login.html';
