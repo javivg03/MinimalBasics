@@ -73,7 +73,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 echo json_encode(["categories" => $categories]);
                 break;
-                
+
+            case 'obtener_productos':
+                $token = $input['token'] ?? '';
+                if (!Utils::validarToken($token)) {
+                    echo json_encode(["error" => "Token inválido o expirado."]);
+                    exit;
+                }
+
+                $categoryId = $input['categoryId'] ?? null;
+                $data = json_decode(file_get_contents(__DIR__ . '/data/tienda.json'), true);
+
+                if ($categoryId) {
+                    $productos = array_filter($data['products'], fn($p) => $p['categoryId'] == $categoryId);
+                } else {
+                    $productos = $data['products'];
+                }
+
+                echo json_encode(["products" => array_values($productos)]);
+                break;
+
             default:
                 http_response_code(400);
                 throw new Exception("Acción no válida");

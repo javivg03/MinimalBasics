@@ -15,13 +15,13 @@ class ProductosVistos {
             return;
         }
 
-        foreach ($this->productos as $producto) {
+        foreach ($this->productos['products'] as $producto) {
             if ($producto['id'] == $productoId) {
                 echo json_encode(["mensaje" => "Producto visto", "producto" => $producto]);
                 return;
             }
         }
-
+        
         http_response_code(404);
         echo json_encode(["error" => "Producto no encontrado"]);
     }

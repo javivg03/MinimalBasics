@@ -9,11 +9,21 @@
 <body>
     <div id="headerContainer"></div> <!-- Contenedor para el header -->
     <main>
-        <h2>Carrito de Compras</h2>
-        <section id="cartItems">
-            <!-- Aquí se mostrarán los productos del carrito -->
+        <section id="cart">
+            <h2>Carrito de Compras</h2>
+            <div id="cartItems">
+                <!-- Aquí se mostrarán los productos del carrito -->
+            </div>
+            <p id="cartTotal">Total: $0.00</p>
+            <button id="checkoutBtn">Realizar Pedido</button>
         </section>
-        <button id="checkoutBtn">Realizar Pedido</button>
+
+        <section id="recentlyViewed">
+            <h2>Productos Recientemente Vistos</h2>
+            <div id="recentProducts" class="products-container">
+                <!-- Aquí se mostrarán los productos recientemente vistos -->
+            </div>
+        </section>
     </main>
     <div id="footerContainer"></div> <!-- Contenedor para el footer -->
     <script src="js/auth.js"></script>

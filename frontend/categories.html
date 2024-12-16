@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categorías - MinimalBasics</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/auth.js" defer></script>
 </head>
+
 <body>
-    <div id="headerContainer"></div> <!-- Contenedor para el header -->
+    <div id="headerContainer"></div>
     <main>
-        <h2 style="display: inline;">Categorías</h2>
-        <div class="category-buttons-container" style="display: inline-block; margin-left: 20px;">
-            <a href="product.html?category=1" class="category-button">Essentials</a>
-            <a href="product.html?category=2" class="category-button">Gráficas</a>
-            <a href="product.html?category=3" class="category-button">Outerwear</a>
-            <a href="product.html?category=4" class="category-button">Accesorios</a>
-            <a href="product.html?category=5" class="category-button">Colaboraciones</a>
-        </div>
-        <div id="categoriesContainer" class="categories-container">
-            <!-- Aquí se cargarán las categorías dinámicamente -->
-        </div>
+        <section id="categories">
+            <h2>Categorías</h2>
+            <div id="categoriesContainer" class="category-buttons-container">
+                <!-- Aquí se mostrarán las categorías -->
+            </div>
+        </section>
+
+        <section id="products">
+            <h2>Productos</h2>
+            <div id="productsContainer" class="products-container">
+                <!-- Aquí se mostrarán los productos -->
+            </div>
+        </section>
     </main>
-    <div id="footerContainer"></div> <!-- Contenedor para el footer -->
-    <script src="js/store.js"></script>
-    <script src="js/product.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/loadComponents.js"></script>
+    <script src="js/categories.js"></script>
 </body>
+
 </html>

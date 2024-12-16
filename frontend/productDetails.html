@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles del Producto - MinimalBasics</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles del Producto - MinimalBasics</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-    <div id="headerContainer"></div> <!-- Contenedor para el header -->
-    <main>
-        <h2>Detalles del Producto</h2>
-        <div id="productDetails" class="product-details"></div> <!-- Contenedor para los detalles del producto -->
-    </main>
-    <div id="footerContainer"></div> <!-- Contenedor para el footer -->
-    <script src="js/auth.js"></script>
-    <script src="js/loadComponents.js"></script>
-    <script src="js/productDetails.js" defer></script> <!-- Asegúrate de que se cargue después del DOM -->
+  <div id="headerContainer"></div> <!-- Contenedor para el header -->
+  <main class="product-details-container">
+    <div id="productDetails" class="product-details-content">
+      <!-- Aquí se cargará el contenido dinámicamente -->
+    </div>
+  </main>
+  <div id="footerContainer"></div> <!-- Contenedor para el footer -->
+  <script src="js/auth.js"></script>
+  <script src="js/loadComponents.js"></script>
+  <script src="js/productDetails.js" defer></script> <!-- Asegúrate de que se cargue después del DOM -->
 </body>
+
 </html>

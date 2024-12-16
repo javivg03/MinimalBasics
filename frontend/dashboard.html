@@ -1,44 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - MinimalBasics</title>
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <div id="headerContainer"></div>
-    <!-- Contenedor para el header -->
-    <main>
-      <section id="welcome">
-        <h2>Bienvenido <span id="username"></span>!</h2>
-        <p>Explora nuestras categorías y encuentra lo que necesitas.</p>
-      </section>
 
-      <section id="category-buttons">
-        <h2>Categorías</h2>
-        <div class="category-buttons-container">
-          <a href="product.html?category=1" class="category-button">Essentials</a>
-          <a href="product.html?category=2" class="category-button">Gráficas</a>
-          <a href="product.html?category=3" class="category-button">Outerwear</a>
-          <a href="product.html?category=4" class="category-button">Accesorios</a>
-          <a href="product.html?category=5" class="category-button">Colaboraciones</a>
-        </div>
-      </section>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - MinimalBasics</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
 
-      <section id="recent">
-        <h2>Productos Destacados</h2>
-        <div id="recentProducts" class="products-container">
-          <!-- Aquí se generarán los productos dinámicamente -->
-        </div>
-      </section>
-    </main>
+<body>
+  <div id="headerContainer"></div>
+  <!-- Contenedor para el header -->
+  <main>
+    <section id="welcome">
+      <h2>Bienvenido <span id="username"></span>!</h2>
+      <p>Explora nuestras categorías y encuentra lo que necesitas.</p>
+    </section>
 
-    <div id="footerContainer"></div>
-    <!-- Contenedor para el footer -->
-    <script src="js/auth.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/loadComponents.js"></script>
-    <!-- Enlace al script que carga el header y el footer -->
-  </body>
+    <section id="category-buttons">
+      <h2>Categorías</h2>
+      <div class="category-buttons-container">
+        <a href="categories.html?category=1" class="category-button">Essentials</a>
+        <a href="categories.html?category=2" class="category-button">Gráficas</a>
+        <a href="categories.html?category=3" class="category-button">Outerwear</a>
+        <a href="categories.html?category=4" class="category-button">Accesorios</a>
+        <a href="categories.html?category=5" class="category-button">Colaboraciones</a>
+      </div>
+    </section>
+
+    <section id="recent">
+      <h2>Productos Destacados</h2>
+      <div id="recentProducts" class="products-container">
+        <!-- Aquí se generarán los productos dinámicamente -->
+      </div>
+    </section>
+  </main>
+
+  <div id="footerContainer"></div>
+  <!-- Contenedor para el footer -->
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/loadComponents.js"></script>
+  <!-- Enlace al script que carga el header y el footer -->
+</body>
 </html>
