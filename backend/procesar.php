@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 require_once 'utils.php';
 require_once 'login.php';
 require_once 'carrito.php';
@@ -40,27 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
 
             case 'productos_vistos':
-                Utils::validarEntrada($input, ['token', 'producto_id']);
+                Utils::validarEntrada($input, ['token']);
+                $productoId = $input['productoId'] ?? null;
                 $productos = new ProductosVistos();
-                $productos->gestionarProductos($input['token'], $input['producto_id']);
+                $productos->gestionarProductos($input['token'], $productoId);
                 break;
 
-            case 'categorias':
-                $token = $input['token'] ?? '';
-
-                // Validar el token
-                if (!Utils::validarToken($token)) {
-                    echo json_encode(["error" => "Token inválido."]);
-                    exit;
-                }
-
-                // Cargar las categorías desde tienda.json
-                $data = json_decode(file_get_contents(__DIR__ . '/data/tienda.json'), true);
-                echo json_encode(["categories" => $data['categories']]);
-                break;
-
+            // Obtener todas las categorías
             case 'obtener_categorias':
-                // Validar el token
                 $token = $input['token'] ?? '';
                 if (!Utils::validarToken($token)) {
                     echo json_encode(["error" => "Token inválido o expirado."]);
@@ -74,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(["categories" => $categories]);
                 break;
 
+            // Obtener productos por categoría
             case 'obtener_productos':
                 $token = $input['token'] ?? '';
                 if (!Utils::validarToken($token)) {
@@ -84,13 +73,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $categoryId = $input['categoryId'] ?? null;
                 $data = json_decode(file_get_contents(__DIR__ . '/data/tienda.json'), true);
 
+                // Filtrar productos si se pasa una categoría
                 if ($categoryId) {
-                    $productos = array_filter($data['products'], fn($p) => $p['categoryId'] == $categoryId);
+                    $productos = array_filter($data['products'], function($p) use ($categoryId) {
+                        return $p['categoryId'] == $categoryId;  // Asegúrate de que 'categoryId' sea el campo correcto
+                    });
                 } else {
                     $productos = $data['products'];
                 }
 
                 echo json_encode(["products" => array_values($productos)]);
+                break;
+
+            case 'logout':
+                session_start();
+                session_destroy(); // Destruye la sesión
+
+                echo json_encode(["mensaje" => "Sesión cerrada correctamente"]);
                 break;
 
             default:

@@ -7,7 +7,6 @@
 │   │   ├── auth.js
 │   │   ├── loadComponents.js
 │   │   ├── categories.js
-│   │   ├── product.js
 │   │   ├── productDetails.js
 │   │   ├── cart.js
 │   │   ├── dashboard.js
@@ -16,7 +15,6 @@
 │   ├── footer.html
 │   ├── dashboard.html
 │   ├── categories.html
-│   ├── product.html
 │   ├── productDetails.html
 │   └── cart.html
 │

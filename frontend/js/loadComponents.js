@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
           logoutBtn.addEventListener("click", function () {
             // Eliminar el token del almacenamiento local
             localStorage.removeItem("token");
-            localStorage.removeItem("categories"); // Eliminar categorías al cerrar sesión
+            localStorage.removeItem("cart"); // Eliminar categorías al cerrar sesión
 
             // Redirigir al usuario a la página de inicio de sesión
             window.location.href = "/MinimalBasics/frontend/login.html";

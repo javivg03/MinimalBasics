@@ -16,5 +16,4 @@ class Carrito {
         echo json_encode(["mensaje" => "Carrito validado", "carrito" => $carrito]);
     }
 }
-
 ?>

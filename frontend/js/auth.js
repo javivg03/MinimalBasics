@@ -58,17 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Función para manejar el cierre de sesión
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function () {
-            // Eliminar el token del almacenamiento local
-            localStorage.removeItem('token');
-
-            // Redirigir al usuario a la página de inicio de sesión
-            window.location.href = '/MinimalBasics/frontend/login.html';
-        });
-    }
-
     // Verificar estado del token
     const token = localStorage.getItem('token');
 
@@ -77,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         '/MinimalBasics/frontend/dashboard.html',
         '/MinimalBasics/frontend/cart.html',
         '/MinimalBasics/frontend/categories.html',
-        '/MinimalBasics/frontend/product.html',
+        '/MinimalBasics/frontend/productDetails.html',
     ];
 
     // Páginas accesibles solo sin autenticación

@@ -19,6 +19,4 @@ class Login {
         echo json_encode(["error" => "Credenciales inválidas"]);
     }
 }
-
-
 ?>
