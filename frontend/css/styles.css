@@ -207,63 +207,66 @@ h2 {
 
 /* Ficha del Producto */
 .product-details-container {
-  margin: 20px auto;
-  max-width: 1200px; /* Aumentar ancho */
-  background-color: var(--white);
-  border-radius: 10px;
-  padding: 30px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
 .product-details-content {
   display: flex;
-  gap: 30px;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
 }
 
 .product-details-content img {
-  width: 50%; /* Imagen ocupa la mitad del espacio */
-  height: auto;
+  width: 100%;
+  max-width: 400px;
   border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.product-details-content .details-text {
-  flex: 1; /* Texto ocupa el resto */
-  text-align: left;
+.product-details-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.product-details-content .details-text h3 {
-  font-size: 32px; /* Texto más grande */
-  color: var(--dark-teal);
-  margin-bottom: 10px;
+.product-details-info h3 {
+  font-size: 2rem;
+  margin: 0;
 }
 
-.product-details-content .details-text p {
-  font-size: 18px; /* Ajustar tamaño */
-  margin-bottom: 15px;
+.product-details-info p {
+  margin: 0;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
-.product-details-content .details-text .price {
-  font-size: 24px; /* Precio destacado */
-  color: var(--raspberry);
-  font-weight: bold;
-  margin-bottom: 20px;
+.product-details-info select {
+  padding: 10px;
+  font-size: 1rem;
+  margin-top: 10px;
 }
 
-.product-details-content .details-text button {
-  padding: 10px 20px;
-  background-color: var(--dark-teal);
-  color: var(--white);
+.product-details-info button {
+  padding: 15px;
+  font-size: 1rem;
+  background-color: #2b616d;
+  color: white;
+  border: none;
   border-radius: 5px;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
-.product-details-content .details-text button:hover {
-  background-color: var(--raspberry);
+.product-details-info button:hover {
+  background-color: #1f4952;
 }
 
 /* Login Form */
@@ -348,11 +351,23 @@ h2 {
 }
 
 @keyframes fadeIn {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 20px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 20px;
+    opacity: 1;
+  }
 }
 
 @keyframes fadeOut {
-  from {bottom: 20px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 20px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }

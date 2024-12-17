@@ -55,5 +55,44 @@ function removeFromCart(index) {
     loadCart();
 }
 
-// Inicialización de la página
-document.addEventListener("DOMContentLoaded", loadCart);
+// Mostrar productos vistos recientemente
+function loadRecentlyViewed() {
+    const token = localStorage.getItem("token");
+
+    fetch('/MinimalBasics/backend/productos_vistos.php?accion=obtener', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const recentProductsContainer = document.getElementById("recentProducts");
+            recentProductsContainer.innerHTML = "";
+
+            if (!data || data.length === 0) {
+                recentProductsContainer.innerHTML = "<p>No hay productos vistos recientemente.</p>";
+                return;
+            }
+
+            data.forEach(product => {
+                const productCard = document.createElement("div");
+                productCard.classList.add("product-card");
+
+                productCard.innerHTML = `
+                    <img src="/MinimalBasics/images/${product.image}" alt="${product.name}" class="product-image">
+                    <h4>${product.name}</h4>
+                    <p>Precio: $${product.price}</p>
+                `;
+
+                recentProductsContainer.appendChild(productCard);
+            });
+        })
+        .catch(error => console.error("Error al cargar los productos vistos:", error));
+}
+
+// Llamar a la función al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+    loadCart();
+    loadRecentlyViewed();
+});
+
