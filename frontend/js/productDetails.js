@@ -13,7 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
             token
         })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+            return response.json();
+        })
         .then(data => {
             const product = data.products.find(p => p.id == productId);
             const productDetailsDiv = document.getElementById('productDetails');
@@ -40,8 +45,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </div>
             `;
+
+            // Agregar el producto a "Vistos recientemente"
+            addToRecentlyViewed(product.id);
         })
-        .catch(error => console.error('Error cargando los datos:', error));
+        .catch(error => {
+            console.error('Error cargando los datos:', error);
+            const productDetailsDiv = document.getElementById('productDetails');
+            productDetailsDiv.innerHTML = '<p>Hubo un error al cargar los detalles del producto.</p>';
+        });
 });
 
 // Obtener tallas según la categoría del producto
@@ -72,6 +84,9 @@ window.agregarAlCarrito = function (productId) {
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Actualizar el badge después de agregar un producto
+    updateCartBadge(cart.reduce((total, item) => total + item.quantity, 0));
     showToast("Producto agregado al carrito");
 };
 
@@ -88,3 +103,26 @@ function showToast(message) {
         setTimeout(() => document.body.removeChild(toast), 300);
     }, 3000);
 }
+
+// Función para añadir un producto a "Vistos recientemente"
+function addToRecentlyViewed(productId) {
+    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+
+    // Evitar duplicados
+    if (!recentlyViewed.includes(productId)) {
+        recentlyViewed.push(productId);
+    }
+
+    // Mantener un límite de 5 productos
+    if (recentlyViewed.length > 5) {
+        recentlyViewed.shift(); // Elimina el más antiguo
+    }
+
+    localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
+}
+
+// Llamar a updateCartBadge al cargar la página para sincronizar el badge con el carrito
+document.addEventListener('DOMContentLoaded', function () {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    updateCartBadge(cart.reduce((total, item) => total + item.quantity, 0));
+});

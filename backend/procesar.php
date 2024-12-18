@@ -3,7 +3,6 @@ header('Content-Type: application/json');
 require_once 'utils.php';
 require_once 'login.php';
 require_once 'carrito.php';
-require_once 'productos_vistos.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -20,7 +19,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'login':
                 Utils::validarEntrada($input, ['username', 'password']);
                 $login = new Login();
-                $login->autenticarUsuario($input);
+                $usuario = $login->autenticarUsuario($input);
+
+                if ($usuario) {
+                    $token = Utils::generarToken(["username" => $usuario['username']]);
+                    // Cargar la información de la tienda
+                    $data = json_decode(file_get_contents(__DIR__ . '/data/tienda.json'), true);
+                    echo json_encode([
+                        "mensaje" => "Autenticación exitosa",
+                        "token" => $token,
+                        "categories" => $data['categories'],
+                        "products" => $data['products']
+                    ]);
+                } else {
+                    http_response_code(401);
+                    echo json_encode(["error" => "Credenciales inválidas"]);
+                }
                 break;
 
             case 'validar_token':
@@ -38,13 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 Utils::validarEntrada($input, ['token', 'carrito']);
                 $carrito = new Carrito();
                 $carrito->validarCarrito($input['token'], $input['carrito']);
-                break;
-
-            case 'productos_vistos':
-                Utils::validarEntrada($input, ['token']);
-                $productoId = $input['productoId'] ?? null;
-                $productos = new ProductosVistos();
-                $productos->gestionarProductos($input['token'], $productoId);
                 break;
 
             // Obtener todas las categorías
@@ -75,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Filtrar productos si se pasa una categoría
                 if ($categoryId) {
-                    $productos = array_filter($data['products'], function($p) use ($categoryId) {
+                    $productos = array_filter($data['products'], function ($p) use ($categoryId) {
                         return $p['categoryId'] == $categoryId;  // Asegúrate de que 'categoryId' sea el campo correcto
                     });
                 } else {

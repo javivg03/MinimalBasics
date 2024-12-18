@@ -1,5 +1,14 @@
 const cartContainer = document.getElementById("cartItems");
 const totalContainer = document.getElementById("cartTotal");
+const cartBadge = document.getElementById("cart-badge");
+
+// Función para actualizar el badge
+function updateCartBadge(quantity) {
+    if (cartBadge) {
+        cartBadge.textContent = quantity;
+        cartBadge.style.visibility = quantity > 0 ? "visible" : "hidden";
+    }
+}
 
 // Función para cargar el carrito
 function loadCart() {
@@ -9,12 +18,12 @@ function loadCart() {
     if (cart.length === 0) {
         cartContainer.innerHTML = "<p>El carrito está vacío.</p>";
         totalContainer.textContent = "Total: $0.00";
+        updateCartBadge(0);
         return;
     }
 
     let total = 0;
 
-    // Realizar una solicitud única para obtener los productos
     fetch('/MinimalBasics/backend/data/tienda.json')
         .then(response => {
             if (!response.ok) {
@@ -23,11 +32,10 @@ function loadCart() {
             return response.json();
         })
         .then(data => {
-            // Procesar cada producto del carrito con los datos obtenidos
             cart.forEach((item, index) => {
                 const product = data.products.find(p => p.id === item.id);
                 if (!product) {
-                    console.warn(`Producto con ID ${item.id} no encontrado en los datos.`);
+                    console.warn(`Producto con ID ${item.id} no encontrado.`);
                     return;
                 }
 
@@ -46,13 +54,14 @@ function loadCart() {
                             <p>Subtotal: $${(product.price * item.quantity).toFixed(2)}</p>
                         </div>
                     </div>
-                    <button class="remove-item" onclick="removeFromCart(${index})">Eliminar</button>
+                    <button class="remove-item nav-button" onclick="removeFromCart(${index})">Eliminar</button>
                 `;
 
                 cartContainer.appendChild(cartItem);
             });
 
             totalContainer.textContent = `Total: $${total.toFixed(2)}`;
+            updateCartBadge(cart.length);
         })
         .catch(error => console.error("Error al cargar los datos del producto:", error));
 }
@@ -65,58 +74,70 @@ function removeFromCart(index) {
     loadCart();
 }
 
-// Mostrar productos vistos recientemente
-function loadRecentlyViewed() {
-    const token = localStorage.getItem("token");
+const recentlyViewedContainer = document.getElementById("recentlyViewed");
 
-    if (!token) {
-        console.error("Token no encontrado en localStorage");
+// Función para añadir un producto a "Vistos recientemente"
+function addToRecentlyViewed(productId) {
+    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+
+    // Evitar duplicados
+    if (!recentlyViewed.includes(productId)) {
+        recentlyViewed.push(productId);
+    }
+
+    // Mantener un límite de 5 productos
+    if (recentlyViewed.length > 5) {
+        recentlyViewed.shift(); // Elimina el más antiguo
+    }
+
+    localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
+}
+
+// Función para cargar la sección de "Vistos recientemente"
+function loadRecentlyViewed() {
+    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+
+    if (recentlyViewed.length === 0) {
+        recentlyViewedContainer.innerHTML = "<p>No has visto productos recientemente.</p>";
         return;
     }
 
-    fetch('/MinimalBasics/backend/procesar.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            accion: 'productos_vistos',
-            token: token,
-        })
-    })
+    fetch('/MinimalBasics/backend/data/tienda.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
+                throw new Error("Error al cargar los datos del producto");
             }
             return response.json();
         })
         .then(data => {
-            const recentProductsContainer = document.getElementById("recentProducts");
-            recentProductsContainer.innerHTML = "";
+            recentlyViewedContainer.innerHTML = ""; 
 
-            if (!data.productos || data.productos.length === 0) {
-                recentProductsContainer.innerHTML = "<p>No hay productos vistos recientemente.</p>";
-                return;
-            }
+            recentlyViewed.forEach(productId => {
+                const product = data.products.find(p => p.id === productId);
+                if (!product) {
+                    console.warn(`Producto con ID ${productId} no encontrado.`);
+                    return;
+                }
 
-            data.productos.forEach(product => {
                 const productCard = document.createElement("div");
-                productCard.classList.add("product-card");
+                productCard.classList.add("recently-viewed-item");
 
                 productCard.innerHTML = `
-                    <img src="/MinimalBasics/images/${product.image}" alt="${product.name}" class="product-image">
+                    <img src="/MinimalBasics/images/${product.image}" alt="${product.name}" class="recently-viewed-image">
                     <h4>${product.name}</h4>
                     <p>Precio: $${product.price}</p>
                 `;
 
-                recentProductsContainer.appendChild(productCard);
+                recentlyViewedContainer.appendChild(productCard);
             });
         })
         .catch(error => console.error("Error al cargar los productos vistos:", error));
 }
 
-// Llamar a las funciones al cargar la página
+// Llamar a las funciones necesarias al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
     loadCart();
     loadRecentlyViewed();
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    updateCartBadge(cart.reduce((total, item) => total + item.quantity, 0));
 });

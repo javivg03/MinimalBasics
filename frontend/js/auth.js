@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
     const errorMessage = document.getElementById('errorMessage');
-    const logoutBtn = document.getElementById('logoutBtn');
 
     // Función para manejar el inicio de sesión
     if (loginForm) {
@@ -31,30 +30,47 @@ document.addEventListener('DOMContentLoaded', function () {
                     password: password,
                 }),
             })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Error al conectar con el servidor");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.token) {
-                        // Guardar el token en localStorage
-                        localStorage.setItem('token', data.token);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error al conectar con el servidor");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.token) {
+                    // Guardar el token en localStorage
+                    localStorage.setItem('token', data.token);
 
-                        // Redirigir al dashboard
-                        window.location.href = '/MinimalBasics/frontend/dashboard.html';
-                    } else {
-                        // Mostrar el mensaje de error
-                        errorMessage.textContent = data.error || "Error desconocido.";
-                        errorMessage.style.display = "block";
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    errorMessage.textContent = "Hubo un problema, intenta de nuevo.";
+                    // Cargar todos los productos y guardarlos en localStorage
+                    return fetch('/MinimalBasics/backend/procesar.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            accion: 'obtener_productos',
+                            token: data.token, 
+                        })
+                    });
+                } else {
+                    // Mostrar el mensaje de error
+                    errorMessage.textContent = data.error || "Error desconocido.";
                     errorMessage.style.display = "block";
-                });
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.products) {
+                    localStorage.setItem('products', JSON.stringify(data.products));
+                }
+                // Redirigir al dashboard
+                window.location.href = '/MinimalBasics/frontend/dashboard.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessage.textContent = "Hubo un problema, intenta de nuevo.";
+                errorMessage.style.display = "block";
+            });
         });
     }
 

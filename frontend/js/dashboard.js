@@ -1,21 +1,32 @@
 // Función para cargar productos destacados
 function cargarProductosDestacados() {
-    fetch('/MinimalBasics/backend/data/tienda.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('No se pudo cargar los productos destacados.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const productosDestacados = data.products.filter(product => product.destacado);
-            mostrarProductosDestacados(productosDestacados);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            const recentProductsContainer = document.getElementById('recentProducts');
-            recentProductsContainer.innerHTML = '<p>Error al cargar los productos destacados. Intente nuevamente más tarde.</p>';
-        });
+    // Intentar obtener productos destacados del localStorage
+    const productosDestacados = JSON.parse(localStorage.getItem('productosDestacados'));
+
+    if (productosDestacados) {
+        // Si existen en localStorage, mostrarlos
+        mostrarProductosDestacados(productosDestacados);
+    } else {
+        // Si no existen, hacer la petición al servidor
+        fetch('/MinimalBasics/backend/data/tienda.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar los productos destacados.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const productosDestacados = data.products.filter(product => product.destacado);
+                // Guardar los productos destacados en localStorage
+                localStorage.setItem('productosDestacados', JSON.stringify(productosDestacados));
+                mostrarProductosDestacados(productosDestacados);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const recentProductsContainer = document.getElementById('recentProducts');
+                recentProductsContainer.innerHTML = '<p>Error al cargar los productos destacados. Intente nuevamente más tarde.</p>';
+            });
+    }
 }
 
 // Función para mostrar productos destacados
