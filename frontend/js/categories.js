@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    cargarCategorias(); // Cargar categorías al iniciar
-    cargarProductos(); // Cargar productos inicialmente sin filtro
+    cargarCategorias(); 
+    cargarProductos(); 
 });
 
 // Cargar las categorías y mostrarlas en botones
@@ -26,8 +26,8 @@ function cargarCategorias() {
         if (data.categories && data.categories.length > 0) {
             data.categories.forEach(category => {
                 const categoryButton = document.createElement('button');
-                categoryButton.textContent = category.name; // Nombre de la categoría
-                categoryButton.onclick = () => redirigirACategoria(category.id, category.name); // Redirige al hacer clic
+                categoryButton.textContent = category.name; 
+                categoryButton.onclick = () => redirigirACategoria(category.id, category.name); 
                 categoriesContainer.appendChild(categoryButton);
             });
         } else {
@@ -47,7 +47,7 @@ function redirigirACategoria(categoryId, categoryName) {
 // Cargar productos según la categoría seleccionada
 function cargarProductos() {
     const urlParams = new URLSearchParams(window.location.search);
-    const categoryId = urlParams.get('category'); // Leer categoría de la URL
+    const categoryId = urlParams.get('category'); 
     const pageTitle = document.getElementById('pageTitle'); // Elemento del título de la página
 
     // Si hay una categoría seleccionada, cambiar el título y cargar los productos filtrados
@@ -89,7 +89,7 @@ function cargarProductos() {
     }
 }
 
-// Obtener el nombre de la categoría desde el servidor o el archivo JSON (se puede mejorar con un array de categorías en memoria)
+// Obtener el nombre de la categoría desde el archivo JSON 
 function getCategoryName(categoryId) {
     const categories = [
         { id: 1, name: 'Essentials' },

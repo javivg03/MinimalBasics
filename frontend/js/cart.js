@@ -12,6 +12,11 @@ function updateCartBadge(quantity) {
 
 // Función para cargar el carrito
 function loadCart() {
+    if (!cartContainer || !totalContainer) {
+        console.warn("Elementos del carrito no encontrados en esta página.");
+        return;
+    }
+
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     cartContainer.innerHTML = "";
 
@@ -66,6 +71,7 @@ function loadCart() {
         .catch(error => console.error("Error al cargar los datos del producto:", error));
 }
 
+
 // Función para eliminar un producto del carrito
 function removeFromCart(index) {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -74,7 +80,7 @@ function removeFromCart(index) {
     loadCart();
 }
 
-const recentlyViewedContainer = document.getElementById("recentlyViewed");
+const recentlyViewedContainer = document.getElementById("recentlyViewedItems");
 
 // Función para añadir un producto a "Vistos recientemente"
 function addToRecentlyViewed(productId) {
@@ -95,6 +101,12 @@ function addToRecentlyViewed(productId) {
 
 // Función para cargar la sección de "Vistos recientemente"
 function loadRecentlyViewed() {
+    // Verifica si el contenedor existe
+    if (!recentlyViewedContainer) {
+        console.warn("El contenedor de productos vistos no está presente en esta página.");
+        return;
+    }
+
     const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
 
     if (recentlyViewed.length === 0) {
@@ -123,9 +135,11 @@ function loadRecentlyViewed() {
                 productCard.classList.add("recently-viewed-item");
 
                 productCard.innerHTML = `
-                    <img src="/MinimalBasics/images/${product.image}" alt="${product.name}" class="recently-viewed-image">
-                    <h4>${product.name}</h4>
-                    <p>Precio: $${product.price}</p>
+                    <a href="productDetails.html?productId=${product.id}" class="recently-viewed-link">
+                        <img src="/MinimalBasics/images/${product.image}" alt="${product.name}" class="recently-viewed-image">
+                        <h4>${product.name}</h4>
+                        <p>Precio: $${product.price}</p>
+                    </a>
                 `;
 
                 recentlyViewedContainer.appendChild(productCard);
@@ -133,6 +147,7 @@ function loadRecentlyViewed() {
         })
         .catch(error => console.error("Error al cargar los productos vistos:", error));
 }
+
 
 // Llamar a las funciones necesarias al cargar la página
 document.addEventListener("DOMContentLoaded", () => {

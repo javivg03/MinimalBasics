@@ -1,4 +1,3 @@
-/* styles.css */
 
 /* Colores personalizados */
 :root {
@@ -200,87 +199,63 @@ h2 {
 
 .cart-item-image {
   width: 50px;
-  /* Ajusta el tamaño de la imagen */
   height: auto;
   margin-right: 10px;
 }
 
-/* Estilo para el contenedor de productos vistos recientemente */
-.recently-viewed-container {
-  margin-top: 20px;
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-}
-
-.recently-viewed-title {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: #2b616d;
-  margin-bottom: 10px;
-}
-
+/* Sección de productos vistos recientemente */
 .recently-viewed-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 15px; 
+  padding: 20px; 
+  margin: 20px auto; 
+  background-color: var(--white); 
+  border-radius: 10px; 
+  max-width: 90%; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
+/* Estilo individual de las tarjetas */
 .recently-viewed-item {
-  flex: 1 1 calc(25% - 15px);
-  max-width: calc(25% - 15px);
-  border: 1px solid #b2dbd5;
-  border-radius: 5px;
-  overflow: hidden;
-  text-align: center;
-  background-color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 0 0 calc(20% - 15px); 
+  max-width: calc(20% - 15px); 
+  border: 1px solid var(--light-gray); 
+  border-radius: 10px; 
+  padding: 15px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  text-align: center; 
+  transition: transform 0.3s, box-shadow 0.3s; 
+  cursor: pointer; 
 }
 
+/* Efecto hover en las tarjetas */
 .recently-viewed-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
 }
 
+/* Imágenes dentro de las tarjetas */
 .recently-viewed-item img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+  max-width: 100%; 
+  height: auto; 
+  border-radius: 5px; 
+  margin-bottom: 10px; 
 }
 
-.recently-viewed-item h4 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #ff4447;
-  margin: 10px 0;
-}
-
-.recently-viewed-item p {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 10px;
-}
-
+/* Enlaces dentro de las tarjetas */
 .recently-viewed-item a {
-  display: inline-block;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #2b616d;
-  text-decoration: none;
-  border: 1px solid #2b616d;
-  border-radius: 3px;
-  padding: 5px 10px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  margin-bottom: 10px;
+  text-decoration: none; 
+  color: var(--text-dark); 
 }
 
-.recently-viewed-item a:hover {
-  background-color: #2b616d;
-  color: #fff;
+.recently-viewed-item a:hover h4 {
+  color: var(--raspberry);
 }
+
+
+
 
 
 .products-container {

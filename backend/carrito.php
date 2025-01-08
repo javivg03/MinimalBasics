@@ -84,8 +84,6 @@ class Carrito {
             $total += $producto['price'] * $item['quantity'];
         }
 
-        // Aquí podrías agregar lógica para procesar el pedido, como actualizar inventario
-
         // Si todo es correcto, devolver una respuesta positiva
         echo json_encode(["mensaje" => "Compra procesada con éxito", "total" => $total, "carrito" => $carrito]);
     }
