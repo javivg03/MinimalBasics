@@ -1,9 +1,8 @@
 const cartContainer = document.getElementById("cartItems");
 const totalContainer = document.getElementById("cartTotal");
-const cartBadge = document.getElementById("cart-badge");
 
-// Función para actualizar el badge
 function updateCartBadge(quantity) {
+    const cartBadge = document.getElementById("cart-badge");
     if (cartBadge) {
         cartBadge.textContent = quantity;
         cartBadge.style.visibility = quantity > 0 ? "visible" : "hidden";
@@ -23,7 +22,7 @@ function loadCart() {
     if (cart.length === 0) {
         cartContainer.innerHTML = "<p>El carrito está vacío.</p>";
         totalContainer.textContent = "Total: $0.00";
-        updateCartBadge(0);
+        updateCartBadge(cart.reduce((total, item) => total + item.quantity, 0));
         return;
     }
 
@@ -66,7 +65,7 @@ function loadCart() {
             });
 
             totalContainer.textContent = `Total: $${total.toFixed(2)}`;
-            updateCartBadge(cart.length);
+            updateCartBadge(cart.reduce((total, item) => total + item.quantity, 0));
         })
         .catch(error => console.error("Error al cargar los datos del producto:", error));
 }
@@ -153,6 +152,4 @@ function loadRecentlyViewed() {
 document.addEventListener("DOMContentLoaded", () => {
     loadCart();
     loadRecentlyViewed();
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    updateCartBadge(cart.reduce((total, item) => total + item.quantity, 0));
 });
