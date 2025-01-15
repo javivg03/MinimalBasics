@@ -1,20 +1,29 @@
 const cartContainer = document.getElementById("cartItems");
 const totalContainer = document.getElementById("cartTotal");
 
+// Actualiza el badge con la cantidad total del carrito
 function updateCartBadge(quantity) {
     const cartBadge = document.getElementById("cart-badge");
     if (cartBadge) {
         cartBadge.textContent = quantity;
         cartBadge.style.visibility = quantity > 0 ? "visible" : "hidden";
     }
+
 }
 
-// Función para cargar el carrito
+// Asegurar actualización del badge al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+    updateCartBadge(totalQuantity); // Actualiza el badge
+});
+
+
 function loadCart() {
     if (!cartContainer || !totalContainer) {
-        console.warn("Elementos del carrito no encontrados en esta página.");
         return;
     }
+
 
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     cartContainer.innerHTML = "";
@@ -49,18 +58,22 @@ function loadCart() {
                 cartItem.classList.add("cart-item");
 
                 cartItem.innerHTML = `
-                    <div class="cart-item-info">
-                        <img src="/MinimalBasics/images/${product.image}" alt="${product.name}" class="cart-item-image">
-                        <div>
-                            <h4>${product.name}</h4>
-                            <p>Precio: $${product.price}</p>
-                            <p>Cantidad: ${item.quantity}</p>
-                            <p>Subtotal: $${(product.price * item.quantity).toFixed(2)}</p>
+                <div class="cart-item-info">
+                    <img src="/MinimalBasics/images/${product.image}" alt="${product.name}" class="cart-item-image">
+                    <div>
+                        <h4>${product.name}</h4>
+                        <p>Precio: $${product.price}</p>
+                        <p>Talla: ${item.size}</p>  <!-- Mostrar la talla -->
+                        <div class="quantity-controls">
+                            <button onclick="decreaseQuantity(${index})">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="increaseQuantity(${index})">+</button>
                         </div>
+                        <p>Subtotal: $${(product.price * item.quantity).toFixed(2)}</p>
                     </div>
-                    <button class="remove-item nav-button" onclick="removeFromCart(${index})">Eliminar</button>
-                `;
-
+                </div>
+                <button class="remove-item nav-button" onclick="removeFromCart(${index})">Eliminar</button>
+            `;
                 cartContainer.appendChild(cartItem);
             });
 
@@ -70,60 +83,32 @@ function loadCart() {
         .catch(error => console.error("Error al cargar los datos del producto:", error));
 }
 
-
-// Función para eliminar un producto del carrito
-function removeFromCart(index) {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    loadCart();
-}
-
-const recentlyViewedContainer = document.getElementById("recentlyViewedItems");
-
-// Función para añadir un producto a "Vistos recientemente"
-function addToRecentlyViewed(productId) {
-    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
-
-    // Evitar duplicados
-    if (!recentlyViewed.includes(productId)) {
-        recentlyViewed.push(productId);
-    }
-
-    // Mantener un límite de 5 productos
-    if (recentlyViewed.length > 5) {
-        recentlyViewed.shift(); // Elimina el más antiguo
-    }
-
-    localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
-}
-
-// Función para cargar la sección de "Vistos recientemente"
 function loadRecentlyViewed() {
-    // Verifica si el contenedor existe
+    const recentlyViewedContainer = document.getElementById("recentlyViewed");
+
     if (!recentlyViewedContainer) {
-        console.warn("El contenedor de productos vistos no está presente en esta página.");
         return;
     }
 
     const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
 
     if (recentlyViewed.length === 0) {
-        recentlyViewedContainer.innerHTML = "<p>No has visto productos recientemente.</p>";
+        recentlyViewedContainer.innerHTML = "<p>No has visto ningún producto recientemente.</p>";
         return;
     }
 
+    // Cargar detalles de los productos
     fetch('/MinimalBasics/backend/data/tienda.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error("Error al cargar los datos del producto");
+                throw new Error("Error al cargar los productos.");
             }
             return response.json();
         })
         .then(data => {
-            recentlyViewedContainer.innerHTML = ""; 
+            recentlyViewedContainer.innerHTML = "";
 
-            recentlyViewed.forEach(productId => {
+            recentlyViewed.reverse().forEach(productId => {
                 const product = data.products.find(p => p.id === productId);
                 if (!product) {
                     console.warn(`Producto con ID ${productId} no encontrado.`);
@@ -134,9 +119,9 @@ function loadRecentlyViewed() {
                 productCard.classList.add("recently-viewed-item");
 
                 productCard.innerHTML = `
-                    <a href="productDetails.html?productId=${product.id}" class="recently-viewed-link">
-                        <img src="/MinimalBasics/images/${product.image}" alt="${product.name}" class="recently-viewed-image">
-                        <h4>${product.name}</h4>
+                    <a href="productDetails.html?productId=${product.id}">
+                        <img src="/MinimalBasics/images/${product.image}" alt="${product.name}">
+                        <p>${product.name}</p>
                         <p>Precio: $${product.price}</p>
                     </a>
                 `;
@@ -144,12 +129,35 @@ function loadRecentlyViewed() {
                 recentlyViewedContainer.appendChild(productCard);
             });
         })
-        .catch(error => console.error("Error al cargar los productos vistos:", error));
+        .catch(error => console.error("Error al cargar productos vistos:", error));
 }
 
-
-// Llamar a las funciones necesarias al cargar la página
-document.addEventListener("DOMContentLoaded", () => {
+function increaseQuantity(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart[index].quantity += 1;
+    localStorage.setItem("cart", JSON.stringify(cart));
     loadCart();
-    loadRecentlyViewed();
+}
+
+function decreaseQuantity(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart[index].quantity > 1) {
+        cart[index].quantity -= 1;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+    } else {
+        removeFromCart(index);
+    }
+}
+
+function removeFromCart(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadCart();  // Cargar carrito
+    loadRecentlyViewed();  // Cargar productos vistos recientemente
 });

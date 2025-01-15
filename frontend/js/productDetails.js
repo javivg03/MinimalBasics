@@ -74,20 +74,23 @@ function getTallasPorCategoria(categoryId) {
 
 // Función global para agregar productos al carrito
 window.agregarAlCarrito = function (productId) {
+    const selectedSize = document.getElementById("size").value;  // Capturar la talla seleccionada
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const productoExistente = cart.find(item => item.id === productId);
+    const productoExistente = cart.find(item => item.id === productId && item.size === selectedSize);
 
     if (productoExistente) {
         productoExistente.quantity += 1;
     } else {
-        cart.push({ id: productId, quantity: 1 });
+        cart.push({ id: productId, size: selectedSize, quantity: 1 });  // Guardar la talla
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    // Actualizar el badge después de agregar un producto
-    updateCartBadge(cart.reduce((total, item) => total + item.quantity, 0));
-    showToast("Producto agregado al carrito");
+    // Emitir un evento personalizado para notificar el cambio en el carrito
+    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+    document.dispatchEvent(new CustomEvent('cartUpdated', { detail: { totalQuantity } }));
+
+    showToast(`Producto agregado al carrito (Talla: ${selectedSize})`);
 };
 
 // Función para mostrar notificaciones tipo toast
@@ -108,18 +111,22 @@ function showToast(message) {
 function addToRecentlyViewed(productId) {
     const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
 
-    // Evitar duplicados
     if (!recentlyViewed.includes(productId)) {
         recentlyViewed.push(productId);
     }
 
-    // Mantener un límite de 5 productos
     if (recentlyViewed.length > 5) {
-        recentlyViewed.shift(); // Elimina el más antiguo
+        recentlyViewed.shift();  // Mantener máximo 5 productos
     }
 
     localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
 }
+
+// Escuchar el evento 'cartUpdated' para actualizar el badge del carrito
+document.addEventListener('cartUpdated', function (event) {
+    const { totalQuantity } = event.detail;
+    updateCartBadge(totalQuantity);
+});
 
 // Llamar a updateCartBadge al cargar la página para sincronizar el badge con el carrito
 document.addEventListener('DOMContentLoaded', function () {
