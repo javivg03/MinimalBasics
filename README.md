@@ -11,7 +11,7 @@ MinimalBasics es una tienda en línea desarrollada con HTML, CSS y JavaScript pu
 ## 🚀 Instalación y Uso
 1. Clonar el repositorio:
    ```sh
-   git clone https://github.com/tu-usuario/minimalbasics.git
+   git clone https://github.com/javivg03/MinimalBasics.git
    ```
 2. Abrir `index.html` en un navegador web.
 3. Explorar los productos y añadirlos al carrito.
